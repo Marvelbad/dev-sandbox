@@ -4,31 +4,60 @@ package badri.sandbox.core.practice;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Solution {
     public static void main(String[] args) throws Exception {
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+        String str = console.readLine();
+        String[] strings = null;
 
-        Map<Integer, Map<String, Integer>> outerMap = new HashMap<>();
-        int lineNumber = 1;
-        while (true) {
-            String str = console.readLine();
-            if (str.isBlank() || str.equals("end")) break;
+        try (BufferedReader reader = new BufferedReader(new FileReader(str))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                strings = line.split(" ");
+            }
+        }
 
-            Map<String, Integer> innerMap = outerMap.getOrDefault(lineNumber, new HashMap<>());
-            String[] parts = str.split(" ");
-            for (String part : parts) {
-                if (part.matches("[a-zA-Zа-яА-Я0-9]+")) {
-                    innerMap.put(part, innerMap.getOrDefault(part, 0) + 1);
+        StringBuilder result = getLine(strings);
+        System.out.println(result);
+    }
+
+    public static StringBuilder getLine(String... words) {
+        if (words == null || words.length == 0) return new StringBuilder();
+
+        List<StringBuilder> builderList = new ArrayList<>();
+
+        for (String word : words) {
+            List<String> list = new ArrayList<>(Arrays.asList(words));
+            list.remove(word);
+
+            StringBuilder builder = new StringBuilder(word);
+            int count = 0;
+            while (!list.isEmpty()) {
+                String firstStartChar = builder.substring(0, 1);
+                String firstEndChar = builder.substring(builder.length() - 1);
+                String str = list.get(0);
+                String secondStartChar = str.substring(0, 1);
+                String secondEndChar = str.substring(str.length() - 1);
+
+                if (firstEndChar.equalsIgnoreCase(secondEndChar)) {
+                    builder.append(" ").append(str);
+                    list.remove(0);
+                } else if (firstStartChar.equalsIgnoreCase(secondStartChar)) {
+                    builder.insert(0, str + " ");
+                    list.remove(0);
+                } else {
+                    list.remove(str);
+                    list.add(str);
+                    count++;
+                    if (count > Math.pow(words.length, 2)) break;
                 }
             }
-            outerMap.put(lineNumber, innerMap);
-            lineNumber++;
+            builderList.add(builder);
         }
-        for (Map.Entry<Integer, Map<String, Integer>> entry : outerMap.entrySet()) {
-            System.out.println(entry.getKey() + entry.getValue().toString());
-        }
+        builderList.forEach(System.out::println);
+        return builderList.stream()
+                .max(Comparator.comparingInt(StringBuilder::length)).get();
     }
 }
