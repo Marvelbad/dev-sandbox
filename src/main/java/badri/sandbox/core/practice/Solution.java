@@ -1,51 +1,23 @@
 package badri.sandbox.core.practice;
 
-public class Solution implements Action {
-    public static int countActionObjects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-    private int param;
-
-    private Action solutionAction = new Action() {
-        @Override
-        public void someAction() {
-            if (param > 0) {
-                FirstClass firstClass = new FirstClass() {
-                    @Override
-                    public Action getDependantAction() {
-                        param--;
-                        if (param > 0) {
-                            return solutionAction; // recursion
-                        } else {
-                            return new SecondClass();
-                        }
-                    }
-                };
-                firstClass.someAction();
-                firstClass.getDependantAction().someAction();
-            } else {
-                new SecondClass().someAction();
-            }
-        }
-    };
-
-    public Solution(int param) {
-        this.param = param;
-    }
-
-
-
+public class Solution {
     public static void main(String[] args) {
-        Solution solution = new Solution(5);
-        solution.someAction();
-        System.out.println("Count of created Action objects is " + countActionObjects);
-
-        solution = new Solution(-1);
-        solution.someAction();
-        System.out.println("Count of created Action objects is " + countActionObjects);
-    }
-
-    @Override
-    public void someAction() {
-
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        for (int i = 0; i < 10; i++) {
+            int taskNumber = i;
+            executor.submit(() -> {
+                System.out.println("Starting task " + taskNumber + ": " + Thread.currentThread().getName());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("Finished task " + taskNumber + ": " + Thread.currentThread().getName());
+            });
+        }
+        executor.shutdown();
     }
 }
