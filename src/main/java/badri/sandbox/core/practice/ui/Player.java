@@ -24,7 +24,7 @@ public class Player {
         state = READY;
         setPlaying(true);
         for (int i = 1; i <= 12; i++) {
-            playlist.add("Track " + i);
+            playlist.add("Track " + i);w
         }
     }
 
