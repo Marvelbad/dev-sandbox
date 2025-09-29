@@ -1,12 +1,21 @@
 package badri.sandbox.core.practice;
 
-import badri.sandbox.core.practice.ui.Player;
-import badri.sandbox.core.practice.ui.UI;
+
+import java.util.concurrent.ExecutorService;
 
 public class Solution {
     public static void main(String[] args) {
-        Player player = new Player();
-        UI ui = new UI(player);
-        ui.init();
+        countDigits();
+
+    }
+
+    public static void countDigits() {
+        for (int i = 1; i <= 30; i++) {
+            if (i % 2 == 0) {
+                System.out.println(i);
+            } else {
+                continue;
+            }
+        }
     }
 }
