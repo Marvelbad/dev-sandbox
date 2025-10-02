@@ -1,21 +1,29 @@
 package badri.sandbox.core.practice;
 
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 public class Solution {
     public static void main(String[] args) {
-        countDigits();
+        Map<String, Integer> map = Map.of("a", 1,
+                "b", 2,
+                "c", 3,
+                "d", 4,
+                "e", 5
+        );
 
-    }
-
-    public static void countDigits() {
-        for (int i = 1; i <= 30; i++) {
-            if (i % 2 == 0) {
-                System.out.println(i);
-            } else {
-                continue;
-            }
-        }
+        Map<String, Integer> sortedMap = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
     }
 }
