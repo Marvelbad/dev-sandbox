@@ -14,11 +14,8 @@ public class Product {
         this.price = price;
     }
 
-    public static Comparator<Product> byName = new Comparator<Product>() {
-        public int compare(Product o1, Product o2) {
-            return o1.getName().compareToIgnoreCase(o2.getName());
-        }
-    };
+    public static Comparator<Product> byName =
+            Comparator.comparing(Product::getName, String::compareToIgnoreCase);
 
     @Override
     public String toString() {
