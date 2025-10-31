@@ -11,15 +11,16 @@ import java.util.stream.Collectors;
 
 public class Solution {
     public static void main(String[] args) {
-        List<City> cities = new ArrayList<>();
+        List<Product> productList = new ArrayList<>();
 
-        cities.add(new City("Sukhum", 60000));
-        cities.add(new City("Gagra", 20000));
+        productList.add(new Product("Antenna", 40000));
+        productList.add(new Product("Smartphone", 20000));
+        productList.add(new Product("Beer", 10000));
 
-        Collections.sort(cities);
+        productList.sort(Product.byName);
 
-        for (City city : cities) {
-            System.out.println(city);
+        for (Product p : productList) {
+            System.out.println(p);
         }
     }
 }
